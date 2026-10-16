@@ -13,45 +13,27 @@
         }
         static void DisplayNumberLine()
         {
+            bool exit = false;
+            Console.Clear();
+            int numberTotal = 25;
             int userNumber = 0;
             Random random = new Random();
             List<int> numberLine = new List<int>();
             for (int i = 0; i <= 25; i++)
             {
                 numberLine.Add(i);
-                numberLine[i] = random.Next(0, 100);
+                numberLine[i] = random.Next(0, 101);
             }
 
             //Console.WriteLine(numberLine.Count - 1 );
-            while (userNumber != 10)
+            while (exit != true)
             {
 
-                Console.Write(numberLine[0] + ", ");
-                Console.Write(numberLine[1] + ", ");
-                Console.Write(numberLine[2] + ", ");
-                Console.Write(numberLine[3] + ", ");
-                Console.Write(numberLine[4] + ", ");
-                Console.Write(numberLine[5] + ", ");
-                Console.Write(numberLine[6] + ", ");
-                Console.Write(numberLine[7] + ", ");
-                Console.Write(numberLine[8] + ", ");
-                Console.Write(numberLine[9] + ", ");
-                Console.Write(numberLine[10] + ", ");
-                Console.Write(numberLine[11] + ", ");
-                Console.Write(numberLine[12] + ", ");
-                Console.Write(numberLine[13] + ", ");
-                Console.Write(numberLine[14] + ", ");
-                Console.Write(numberLine[15] + ", ");
-                Console.Write(numberLine[16] + ", ");
-                Console.Write(numberLine[17] + ", ");
-                Console.Write(numberLine[18] + ", ");
-                Console.Write(numberLine[19] + ", ");
-                Console.Write(numberLine[20] + ", ");
-                Console.Write(numberLine[21] + ", ");
-                Console.Write(numberLine[22] + ", ");
-                Console.Write(numberLine[23] + ", ");
-                Console.Write(numberLine[24] + ", ");
-                Console.WriteLine(numberLine[25]);
+               foreach (int number in numberLine.Skip(1).Take(numberLine.Count - 2))
+               {
+                    Console.Write(number + ", ");
+               }
+                Console.WriteLine("");
                 Console.WriteLine("");
                 Console.WriteLine("Please pick a number from 1-10");
                 Console.WriteLine(":.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:");
@@ -75,51 +57,120 @@
 
                 if (userNumber == 1)
                 {
+                    Console.Clear();
                     numberLine.Sort();
                     Console.WriteLine("Sorted list:");
-                    foreach (int number in numberLine)
-                    {
-                        Console.Write(number + ", ");
-                    }
-                    Console.WriteLine();
+                    
+                    
                 }
                 else if (userNumber == 2)
                 {
+                    Console.Clear();
                     DisplayNumberLine();
                 }
                 else if (userNumber == 3)
                 {
                     Console.WriteLine("Enter the number you want to remove:");
-                    int numberToRemove;
-                    while (!int.TryParse(Console.ReadLine(), out numberToRemove))
+                    int numberToRemove = 0;
+                    while (!int.TryParse(Console.ReadLine(), out numberToRemove) || numberToRemove < 1 || numberToRemove > numberTotal)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid input. Please enter a valid integer.");
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
-                    if (numberLine.Remove(numberToRemove))
+                    Console.Clear();
+                    numberLine.RemoveAt(numberToRemove);
+                    Console.WriteLine(numberLine.Count);
+                    if (numberLine.Count == 0)
                     {
-                        Console.WriteLine($"Removed {numberToRemove} from the list.");
+                        Console.WriteLine("The list is now empty.");
+                    }
+                    else if (numberToRemove % 2 == 0)
+                    {
+                        Console.WriteLine($"Removed {numberToRemove}nd from the list.");
                     }
                     else
                     {
-                        Console.WriteLine($"{numberToRemove} was not found in the list.");
+                        Console.WriteLine($"Removed {numberToRemove}th from the list.");
                     }
+                    
                 }
                 else if (userNumber == 4)
                 {
                     Console.WriteLine("Enter the number you want to add:");
-                    int numberToAdd;
-                    while (!int.TryParse(Console.ReadLine(), out numberToAdd))
+                    int numberToAdd = 25;
+                    while (!int.TryParse(Console.ReadLine(), out numberToAdd) || numberToAdd < numberLine.Count || numberToAdd > 100)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid input. Please enter a valid integer.");
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
+                    Console.Clear();
                     numberLine.Add(numberToAdd);
+                    numberLine.Sort();
+                    
                     Console.WriteLine($"Added {numberToAdd} to the list.");
 
 
+                }
+                else if (userNumber == 5)
+                {
+                    Console.WriteLine("Enter the number you want to find:");
+                    int numberToFind = 0;
+                    while (!int.TryParse(Console.ReadLine(), out numberToFind) || numberToFind < 1 || numberToFind > numberTotal)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid input. Please enter a valid integer.");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    if (numberLine.Contains(numberToFind))
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"The number {numberToFind} is in the list.");
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"The number {numberToFind} is not in the list.");
+                    }
+                }
+                else if (userNumber == 6)
+                {
+                    Console.Clear();
+                    int largestNumber = numberLine.Max();
+                    Console.WriteLine($"The largest number in the list is: {largestNumber}");
+                }
+                else if (userNumber == 7)
+                {
+                    Console.Clear();
+                    int smallestNumber = numberLine.Min();
+                    Console.WriteLine($"The smallest number in the list is: {smallestNumber}");
+                }
+                else if (userNumber == 8)
+                {
+                    Console.Clear();
+                    double average = numberLine.Average();
+                    Console.WriteLine($"The average of the numbers in the list is: {average}");
+                }
+                else if (userNumber == 9)
+                {
+                    var sortedList = numberLine.OrderBy(n => n).ToList();
+                    double median;
+                    int count = sortedList.Count;
+                    if (count % 2 == 0)
+                    {
+                        median = (sortedList[count / 2 - 1] + sortedList[count / 2]) / 2.0;
+                    }
+                    else
+                    {
+                        median = sortedList[count / 2];
+                    }
+                    Console.Clear();
+                    Console.WriteLine($"The median of the numbers in the list is: {median}");
+                }
+                else if (userNumber == 10)
+                {
+                    exit = true;
                 }
             }
         }
