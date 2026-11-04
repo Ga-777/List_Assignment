@@ -10,7 +10,10 @@
             Console.WriteLine("Please enter a number to contiune:");
             Console.ReadLine();
             DisplayNumberLine();
-        }
+            vegetableList();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Thank you for using the Number Line TM");
+		}
         static void DisplayNumberLine()
         {
             bool exit = false;
@@ -170,9 +173,149 @@
                 }
                 else if (userNumber == 10)
                 {
-                    exit = true;
+					Console.Clear();
+					exit = true;
+
                 }
             }
         }
-    }
+        public static void vegetableList()
+		{
+			int userNumber = 0;
+			List<string> vegetables = new List<string> { "Carrot", "Broccoli", "Spinach", "Cauliflower", "Kale" };
+            List<int> vegetableNumbers = new List<int> { 1, 2, 3, 4, 5 };
+            bool exit = false;
+			while (exit != true)
+            {
+                Console.WriteLine("Vegetable List:");
+                foreach (string vegetable in vegetables)
+                {
+                    Console.WriteLine($"{vegetableNumbers[vegetables.IndexOf(vegetable)]}. {vegetable}");
+
+                }
+                Console.WriteLine("");
+                Console.WriteLine("Please enter the number of the vegetable you want to select:");
+                Console.WriteLine(":.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:");
+                Console.WriteLine("1) Remove number");
+                Console.WriteLine("2) Add number");
+                Console.WriteLine("3) Find Vegetable");
+                Console.WriteLine("4) Sort the list");
+				Console.WriteLine("5) Clear the list");
+				Console.WriteLine("6) Exit");
+                while (!int.TryParse(Console.ReadLine(), out userNumber) || userNumber < 1 || userNumber > 6)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Invalid input. Please enter a number between 1 and 6.");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+
+                if (userNumber == 1)
+                {
+                    if (vegetables.Count == 0)
+					{
+						Console.Clear();
+						Console.WriteLine("The vegetable list is empty. There are no vegetables to remove.");
+						continue;
+					}
+                    else
+                    {
+						Console.WriteLine("Which do you want to use to remove the vegetable? (1) by number (2) by name?");
+						while (!int.TryParse(Console.ReadLine(), out userNumber) || userNumber < 1 || userNumber > 2)
+						{
+							Console.ForegroundColor = ConsoleColor.Red;
+							Console.WriteLine("Invalid input. Please enter a number between 1 and 2.");
+							Console.ForegroundColor = ConsoleColor.Green;
+						}
+						if (userNumber == 1)
+						{
+							Console.WriteLine("Enter the number of the vegetable you want to remove:");
+							int vegetableToRemove = 0;
+							while (!int.TryParse(Console.ReadLine(), out vegetableToRemove) || vegetableToRemove < 1 || vegetableToRemove > vegetables.Count)
+							{
+								Console.ForegroundColor = ConsoleColor.Red;
+								Console.WriteLine("Invalid input. Please enter a valid integer.");
+								Console.ForegroundColor = ConsoleColor.Green;
+							}
+							vegetables.RemoveAt(vegetableToRemove - 1);
+							Console.Clear();
+							Console.WriteLine("Vegetable removed from the list.");
+						}
+						else if (userNumber == 2)
+						{
+							Console.WriteLine("Enter the name of the vegetable you want to remove: (Warning: Type the exact name, or the vegetable will not be removed)");
+							string vegetableToRemoveByName = Console.ReadLine();
+							if (vegetables.Contains(vegetableToRemoveByName))
+							{
+								vegetables.Remove(vegetableToRemoveByName);
+								Console.Clear();
+								Console.WriteLine("Vegetable removed from the list.");
+							}
+							else
+							{
+								Console.Clear();
+								Console.WriteLine("Vegetable not found in the list.");
+							}
+						}
+					}
+					
+
+
+					
+                    
+                }
+                else if (userNumber == 2)
+                {
+                    Console.WriteLine("Enter the name of the vegetable you want to add:");
+                    string vegetableToAdd = Console.ReadLine();
+                    vegetables.Add(vegetableToAdd);
+                    int newNumber = vegetables.Count;
+                    vegetableNumbers.Add(newNumber);
+
+                    Console.Clear();
+                    Console.WriteLine("Vegetable added to the list.");
+                }
+                else if (userNumber == 3)
+				{
+					Console.WriteLine("Enter the name of the vegetable you want to find:");
+					string vegetableToFind = Console.ReadLine();
+                    Thread.Sleep(1000);
+					if (vegetables.Contains(vegetableToFind))
+					{
+
+						Console.Clear();
+						Console.WriteLine($"The vegetable {vegetableToFind} is in the list.");
+                        Console.WriteLine($"");
+						Console.WriteLine($"The vegetable {vegetableToFind} is number {vegetableNumbers[vegetables.IndexOf(vegetableToFind)]} in the list.");
+						Console.WriteLine($"");
+					}
+					else
+					{
+						Console.Clear();
+						Console.WriteLine($"The vegetable {vegetableToFind} is not in the list.");
+					}
+				}
+				else if (userNumber == 4)
+				{
+					Console.Clear();
+					vegetables.Sort();
+					Console.WriteLine("Sorted list:");
+				}
+                else if (userNumber == 5)
+                {
+                    Console.Clear();
+					vegetables.Clear();
+                    vegetableNumbers.Clear();
+                    Console.WriteLine("The vegetable list has been cleared.");
+
+				}
+				else if (userNumber == 6)
+                {
+                    Console.Clear();
+					exit = true;
+					return;
+                }
+            }
+		}
+
+	}
 }
